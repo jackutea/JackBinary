@@ -6,7 +6,7 @@ namespace JackBinary {
 
     public static class BinaryWriter  {
 
-        public static void Yo() {
+        public static void YoYO() {
             Debug.Log("Yo123");
         }
 
