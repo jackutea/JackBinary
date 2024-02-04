@@ -1,10 +1,18 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using System.IO;
 using UnityEngine;
 
 // 存档
 namespace JackBinary.Sample {
+
+    [StructLayout(LayoutKind.Explicit)]
+    public struct Bit32 {
+        // 二进制重叠
+        [FieldOffset(0)] public float f; // 4byte
+        [FieldOffset(0)] public uint uf; // 4byte
+    }
 
     public class RoleEntity {
 
@@ -52,6 +60,47 @@ namespace JackBinary.Sample {
     public class Sample_BinaryWriter : MonoBehaviour {
 
         void Awake() {
+
+            // Bit32 b32 = new Bit32();
+            // b32.us1 = 1;
+            // b32.us2 = 2; // 131073
+            // Debug.Log("b32 " + b32.uf);
+
+            byte[] buffer = new byte[1024];
+            int offset = 0; 
+
+            Bit32 b32 = new Bit32();
+            float f = 1.1f;
+            b32.f = f;
+
+            BinaryWriter.WriteUint(buffer, b32.uf, ref offset);
+
+            // Read
+            offset = 0;
+            uint fr = BinaryReader.ReadUint(buffer, ref offset);
+            Bit32 r32 = new Bit32();
+            r32.uf = fr;
+            Debug.Log($"f: {f}, f2: {r32.f}");
+
+            Debug.Log($"Hello \0 World  \" ");
+
+            // float a = 1.1f;
+            // int value = (int)a; // 不能这样转, 因为它会十进制转换
+
+            // 有符号与无符号的同位同型数(32bit -> 32bit)转换，它进行二进制转换
+            // 二进制不变
+            // 十进制变了
+            // int -> uint
+            int a = -1; // 111111111111111111
+            uint ua = (uint)a; // 111111111111111111
+
+            // 同符号转换, 不同的位数转换(32bit -> 16bit)，它进行十进制转换
+            // 二进制变
+            // 十进制不变
+            // float(32bit) -> double(64bit)
+            int a2 = -1; // -1, 1111 三十二个1
+            short sa2 = (short)a2; // -1, 1111 十六个1
+
             RoleEntity role = new RoleEntity();
             role.Load();
             role.Log();

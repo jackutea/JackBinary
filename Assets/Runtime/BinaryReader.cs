@@ -1,6 +1,21 @@
+using System.Text;
+
 namespace JackBinary {
 
     public static class BinaryReader {
+
+        public static uint ReadUint(byte[] buffer, ref int index) {
+            uint value = 0;
+            value = value | (uint)(buffer[index] << 0);
+            index++;
+            value = value | (uint)(buffer[index] << 8);
+            index++;
+            value = value | (uint)(buffer[index] << 16);
+            index++;
+            value = value | (uint)(buffer[index] << 24);
+            index++;
+            return value;
+        }
 
         public static int ReadInt(byte[] buffer, ref int index) {
 

@@ -1,8 +1,12 @@
+using System.Text;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace JackBinary {
+
+    // float
+    // string
 
     // 写入
     public static class BinaryWriter {
@@ -42,6 +46,22 @@ namespace JackBinary {
 
         }
 
+        public static void WriteUint(byte[] buffer, uint value, ref int index) {
+
+            buffer[index] = (byte)(value >> 0);
+            index++;
+
+            buffer[index] = (byte)(value >> 8);
+            index++;
+
+            buffer[index] = (byte)(value >> 16);
+            index++;
+
+            buffer[index] = (byte)(value >> 24);
+            index++;
+
+        }
+
         public static void WriteUshort(byte[] buffer, ushort value, ref int index) {
 
             buffer[index] = (byte)(value >> 0);
@@ -51,6 +71,15 @@ namespace JackBinary {
             index++;
 
         }
+
+        // public static void WriteUtf8String(byte[] buffer, string value, ref int index) {
+        //     byte[] data = System.Text.Encoding.UTF8.GetBytes(value);
+        //     // WriteByteArr
+        // }
+
+        // public static string ReadUtf8String(byte[] buffer, ref int index) {
+        //     string value = System.Text.Encoding.UTF8.GetString(buffer, index, len);
+        // }
 
     }
 
